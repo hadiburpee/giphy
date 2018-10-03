@@ -20,11 +20,12 @@ function AJAXrequest(ajaxSearch){
         for(i=0; i<10; i++){
         loopingArray.push(response.data[i].images.downsized.url);
         stillArray.push(response.data[i].images.original_still.url);
-        addToPage(loopingArray[i]);
+        addToPage(loopingArray[i], stillArray[i]);
         console.log(loopingArray[i]);
         }
         //empties array so you can pull up the next item
         loopingArray = [];
+        stillArray = [];
         
     });
     //adds the gifs to the page after the ajax request is done
@@ -40,14 +41,16 @@ function renderButton(searchWord){
     $("#button-view").append(a);
 }
 
-function addToPage(animateToAdd){
+function addToPage(animateToAdd, stillToAdd){
     var gifDiv = $("<div>");
     var animalImage = $("<img>");
     
     
     animalImage.attr("src", animateToAdd);
     animalImage.attr("animate", animateToAdd);
+    animalImage.attr("still", stillToAdd);
     animalImage.attr("data-state", "animate");
+    animalImage.addClass("giffy");
     gifDiv.append(animalImage);
     $("#gifs-here").prepend(gifDiv);
     console.log("add to page: " + animateToAdd);
@@ -76,6 +79,21 @@ $(document).on("click", ".animal", function(){
     AJAXrequest(searchJax);
 });
 
+//click function to change the gif from pause to unpause.  Need to fix sizing.
+$(document).on("click", ".giffy", function(){
+
+    var state = $(this).attr("data-state");
+
+    if(state == "animate"){
+        $(this).attr("src", $(this).attr("still"));
+        $(this).attr("data-state", "still");
+    }
+    else{
+        $(this).attr("src", $(this).attr("animate"));
+        $(this).attr("data-state", "animate");
+    }
+
+});
 
 
 
