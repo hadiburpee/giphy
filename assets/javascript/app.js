@@ -19,7 +19,7 @@ function AJAXrequest(ajaxSearch){
         //stores original and still gif, need to clear array when pushing another button
         for(i=0; i<10; i++){
         loopingArray.push(response.data[i].images.downsized.url);
-        stillArray.push(response.data[i].images.original_still.url);
+        stillArray.push(response.data[i].images.downsized_still.url);
         addToPage(loopingArray[i], stillArray[i]);
         console.log(loopingArray[i]);
         }
