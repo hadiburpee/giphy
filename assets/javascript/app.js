@@ -1,11 +1,17 @@
 //giphy API key iROsCNPKvZ3parYmVXiCRo62MTMWjEXP
 
-var searchTerm = "dog";
+//Global variables for my own array, array for looping gif link, array for still gif link and array for rating.
+var hadiArray = ['bear', 'cat', 'dog', 'shark', 'lion', 'tiger', 'elephant', 'lizard', 'bird', 'fish', 'alligator'];
 var loopingArray = [];
 var stillArray = [];
+var ratingArray = [];
+
+
+//loads page first then jquery/javascript
 $(document).ready(function(){
+
 //async request
-    
+//Function performs an Ajax request by passing through the search term based on which button is clicked.    
 function AJAXrequest(ajaxSearch){
 
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + ajaxSearch + "&api_key=iROsCNPKvZ3parYmVXiCRo62MTMWjEXP&limit=10";
@@ -16,23 +22,21 @@ function AJAXrequest(ajaxSearch){
     }).then(function(response){
         console.log(response);
         
-        //stores original and still gif, need to clear array when pushing another button
+        //stores original gif, still giff and rating in arrays.
         for(i=0; i<10; i++){
         loopingArray.push(response.data[i].images.downsized.url);
         stillArray.push(response.data[i].images.downsized_still.url);
-        addToPage(loopingArray[i], stillArray[i]);
-        console.log(loopingArray[i]);
+        ratingArray.push(response.data[i].rating);
+        addToPage(loopingArray[i], stillArray[i], ratingArray[i]);
         }
-        //empties array so you can pull up the next item
+        //empties array so the next button click puts up new search results.
         loopingArray = [];
         stillArray = [];
-        
+        ratingArray = []; 
     });
-    //adds the gifs to the page after the ajax request is done
-
 }
 
-//creates buttons for each search
+//Creates a button for each term searched.
 function renderButton(searchWord){
     var a = $("<button>");
     a.addClass("animal");
@@ -41,37 +45,45 @@ function renderButton(searchWord){
     $("#button-view").append(a);
 }
 
-function addToPage(animateToAdd, stillToAdd){
+//Creates buttons for the default buttons.
+function defaultButton(){
+    for(i=0; i<hadiArray.length; i++){
+        renderButton(hadiArray[i]);
+    }
+}
+
+//Adds the gif to page with the correct src and attributes for pause and play click
+function addToPage(animateToAdd, stillToAdd, ratingToAdd){
     var gifDiv = $("<div>");
     var animalImage = $("<img>");
+    var rating = $("<p>");
     
-    
-    animalImage.attr("src", animateToAdd);
+    rating.text("Rating: " + ratingToAdd);
+    animalImage.attr("src", stillToAdd);
     animalImage.attr("animate", animateToAdd);
     animalImage.attr("still", stillToAdd);
-    animalImage.attr("data-state", "animate");
+    animalImage.attr("data-state", "still");
     animalImage.addClass("giffy");
     gifDiv.append(animalImage);
-    $("#gifs-here").prepend(gifDiv);
-    console.log("add to page: " + animateToAdd);
-    
+    gifDiv.append(rating);
+    $("#gifs-here").prepend(gifDiv);  
 }
 
+//resets the gif div, used for new button clicks
 function resetDiv(){
     $("#gifs-here").empty();
-
 }
 
+//add button function
 $("#add-button").on("click", function(event){
-
     event.preventDefault();
     var inputSearch = $("#search-input").val().trim();
     //make a button function
     console.log(inputSearch);
     renderButton(inputSearch);
-
 });
 
+//used to search based on button clicked.
 $(document).on("click", ".animal", function(){
 
     var searchJax = $(this).attr("data-name");
@@ -95,9 +107,7 @@ $(document).on("click", ".giffy", function(){
 
 });
 
-
-
-
-
+//Posts initial default buttons to page
+defaultButton();
 
 });//document ready bracket
