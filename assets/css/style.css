@@ -15,7 +15,7 @@ h1{
 
 #boxy{
     max-width: 100%;
-    width: 720px;
+    width: 960px;
     border: 50px;
     background-color: rgba(39, 2, 39, 0.219);
     padding: 50px;
@@ -47,7 +47,14 @@ h1{
 }
 
 .giffy{
-    max-height: 250px;
-    max-width: 250px;
     
+    width: 185px;
+    height: 150px;
+    margin: 1%;
+    
+}
+
+.whole-gif{
+    float: left;    
+    padding: 5px;
 }

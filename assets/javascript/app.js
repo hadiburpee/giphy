@@ -24,8 +24,8 @@ function AJAXrequest(ajaxSearch){
         
         //stores original gif, still giff and rating in arrays.
         for(i=0; i<10; i++){
-        loopingArray.push(response.data[i].images.downsized.url);
-        stillArray.push(response.data[i].images.downsized_still.url);
+        loopingArray.push(response.data[i].images.fixed_height_small.url);
+        stillArray.push(response.data[i].images.fixed_height_small_still.url);
         ratingArray.push(response.data[i].rating);
         addToPage(loopingArray[i], stillArray[i], ratingArray[i]);
         }
@@ -58,6 +58,7 @@ function addToPage(animateToAdd, stillToAdd, ratingToAdd){
     var animalImage = $("<img>");
     var rating = $("<p>");
     
+    gifDiv.addClass("whole-gif");
     rating.text("Rating: " + ratingToAdd);
     animalImage.attr("src", stillToAdd);
     animalImage.attr("animate", animateToAdd);
